@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { createExpense, updateExpense, deleteExpense, getExpenses } from "./actions/expenseActions";
 import { Expense } from "../types/Expense";
+import { errorToast, successToast } from "../components/toast";
 
 interface IinitialState {
     expenses: Expense[],
@@ -32,11 +33,12 @@ const expenseSlice = createSlice({
             state.expenses.splice(0,0, action.payload)
             state.isLoading = false
             state.status = 'successful'
+            successToast('Expense successfully created')
         })
         .addCase(createExpense.rejected, (state, action) => {
             state.isLoading = false
             state.status = 'failed'
-            alert(action.payload)
+            errorToast(action.payload as string)
         })
         .addCase(getExpenses.pending, (state) => {
             state.isFetchingExpenses = true
@@ -47,7 +49,7 @@ const expenseSlice = createSlice({
         })
         .addCase(getExpenses.rejected, (state, action) => {
             state.isFetchingExpenses = false
-            alert(action.payload)
+            errorToast(action.payload as string)
         })
         .addCase(updateExpense.pending, (state) => {
             state.isLoading = true
@@ -62,11 +64,12 @@ const expenseSlice = createSlice({
             })
             state.isLoading = false
             state.status = 'successful'
+            successToast('Expense successfully updated')
         })
         .addCase(updateExpense.rejected, (state, action) => {
             state.isLoading = false
             state.status = 'failed'
-            alert(action.payload)
+            errorToast(action.payload as string)
         })
         .addCase(deleteExpense.pending, (state) => {
             state.isLoading = true
@@ -75,11 +78,12 @@ const expenseSlice = createSlice({
             state.expenses = state.expenses.filter((expense) => expense.id !== action.payload)
             state.isLoading = false
             state.status = 'successful'
+            successToast('Expense successfully deleted')
         })
         .addCase(deleteExpense.rejected, (state, action) => {
             state.isLoading = false
             state.status = 'failed'
-            alert(action.payload)
+            errorToast(action.payload as string)
         })
     }
 })

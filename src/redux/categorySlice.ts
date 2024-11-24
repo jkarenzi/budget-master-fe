@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Category } from "../types/Category";
 import { createCategory, deleteCategory, getCategories, updateCategory } from "./actions/categoryActions";
+import { errorToast, successToast } from "../components/toast";
 
 interface IinitialState {
     categories: Category[],
@@ -32,11 +33,12 @@ const categorySlice = createSlice({
             state.categories.splice(0,0, action.payload)
             state.isLoading = false
             state.status = 'successful'
+            successToast('Category successfully created')
         })
         .addCase(createCategory.rejected, (state, action) => {
             state.isLoading = false
             state.status = 'failed'
-            alert(action.payload)
+            errorToast(action.payload as string)
         })
         .addCase(getCategories.pending, (state) => {
             state.isFetchingCategories = true
@@ -47,7 +49,7 @@ const categorySlice = createSlice({
         })
         .addCase(getCategories.rejected, (state, action) => {
             state.isFetchingCategories = false
-            alert(action.payload)
+            errorToast(action.payload as string)
         })
         .addCase(updateCategory.pending, (state) => {
             state.isLoading = true
@@ -62,11 +64,12 @@ const categorySlice = createSlice({
             })
             state.isLoading = false
             state.status = 'successful'
+            successToast('Category successfully updated')
         })
         .addCase(updateCategory.rejected, (state, action) => {
             state.isLoading = false
             state.status = 'failed'
-            alert(action.payload)
+            errorToast(action.payload as string)
         })
         .addCase(deleteCategory.pending, (state) => {
             state.isLoading = true
@@ -75,11 +78,12 @@ const categorySlice = createSlice({
             state.categories = state.categories.filter((category) => category.id !== action.payload)
             state.isLoading = false
             state.status = 'successful'
+            successToast('Category successfully deleted')
         })
         .addCase(deleteCategory.rejected, (state, action) => {
             state.isLoading = false
             state.status = 'failed'
-            alert(action.payload)
+            errorToast(action.payload as string)
         })
     }
 })
