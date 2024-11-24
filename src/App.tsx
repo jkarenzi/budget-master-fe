@@ -5,13 +5,11 @@ import SignUp from './pages/SignUp';
 import Dashboard from './pages/Dashboard';
 import Categories from './pages/Categories';
 import Expenses from './pages/Expenses';
-import { useAppSelector } from './redux/hooks';
 import { ToastContainer, Bounce } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
-  const {token} = useAppSelector(state => state.auth)
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/">
